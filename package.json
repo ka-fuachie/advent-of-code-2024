@@ -1,0 +1,16 @@
+{
+  "name": "y",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "nodemon": "^3.1.7"
+  }
+}
