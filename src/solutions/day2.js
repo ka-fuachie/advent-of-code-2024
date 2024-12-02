@@ -23,8 +23,7 @@ function isReportSafe(report, withDampener = false) {
 
   for(let i = 0; i < report.length; i++) {
     let item = report[i]
-    let test = isItemSafe(item, prevItem, state)
-    if(!test.ok) {
+    if(!isItemSafe(item, prevItem, state)) {
       if(withDampener) {
         for(let j = 0; j <= i; j++) {
           if(!isReportSafe(report.filter((_,k) => j != k))) continue
@@ -34,7 +33,9 @@ function isReportSafe(report, withDampener = false) {
       return false
     }
 
-    state = test.state
+    if(state == null && prevItem != null) {
+      state = item > prevItem ? "increasing": "decreasing"
+    }
     prevItem = item
   }
 
@@ -47,7 +48,7 @@ function isReportSafe(report, withDampener = false) {
   * @param {"increasing" | "decreasing" | null} state
   */
 function isItemSafe(item, prevItem, state) {
-  if(item == null) return {state, ok: true}
+  if(item == null) return true
 
   if(prevItem != null) {
     let isConsistent = (
@@ -57,12 +58,8 @@ function isItemSafe(item, prevItem, state) {
     )
 
     let diff = Math.abs(item - prevItem)
-    if(!isConsistent || diff > 3 || diff < 1) return {ok: false, state}
+    if(!isConsistent || diff > 3 || diff < 1) return false
   }
 
-  if(state == null && prevItem != null) {
-    state = item > prevItem ? "increasing": "decreasing"
-  }
-
-  return {state, ok: true}
+  return true
 }
