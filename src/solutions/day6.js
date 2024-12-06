@@ -62,14 +62,12 @@ let totalLoopPossiblities = 0
 for(let visitedNode of visited.values()) {
   let [row,column] = getPositionFromVisitedNode(visitedNode)
 
-  let char = labMap[row][column]
-  if(char !== OPEN) continue
-  if(row === guardRow && column === guardColumn) continue
-
   obstaclesApproached = new Set();
   [guardState, guardRow, guardColumn] = (
     getGuardInitialStateAndPosition(labMap)
   )
+  if(row === guardRow && column === guardColumn) continue
+
   let newMap = labMap.map((line, i) => {
     if(i != row) return line
     return line
@@ -82,7 +80,6 @@ for(let visitedNode of visited.values()) {
   })
 
   while(true) {
-    visited.add(getVisitedNode(guardRow, guardColumn));
     [guardRow, guardColumn, guardState] = (
       handleGurdUp(newMap, guardRow, guardColumn, guardState) ??
       handleGurdRight(newMap, guardRow, guardColumn, guardState) ??
