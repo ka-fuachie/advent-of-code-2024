@@ -5,4 +5,5 @@
 // import "./solutions/day5.js";
 // import "./solutions/day6.js";
 // import "./solutions/day7.js";
-import "./solutions/day8.js";
+// import "./solutions/day8.js";
+import "./solutions/day9.js";
