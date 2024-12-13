@@ -8,4 +8,5 @@
 // import "./solutions/day8.js";
 // import "./solutions/day9.js";
 // import "./solutions/day10.js";
-import "./solutions/day11.js";
+// import "./solutions/day11.js";
+import "./solutions/day12.js";
