@@ -1,37 +1,11 @@
 import { getInput } from "../utils.js";
 
 let input = await getInput(13);
-input = `Button A: X+94, Y+34
-Button B: X+22, Y+67
-Prize: X=8400, Y=5400
-
-Button A: X+26, Y+66
-Button B: X+67, Y+21
-Prize: X=12748, Y=12176
-
-Button A: X+17, Y+86
-Button B: X+84, Y+37
-Prize: X=7870, Y=6450
-
-Button A: X+69, Y+23
-Button B: X+27, Y+71
-Prize: X=18641, Y=10279`
 
 const buttonRegExp = /Button\s(A|B):\sX(\+\d+),\sY(\+\d+)/
 const prizeRegExp = /Prize:\sX=(\d+),\sY=(\d+)/
-const MAX_BUTTON_PRESSES = 100
-// const MAX_BUTTON_PRESSES = 6
 
 let machines = input.split("\n\n").map(str => parseMachine(str))
-// console.log(machines)
-// machines = [
-//   {
-//     a: {x: 6, y: 8, token: 3},
-//     b: {x: 3, y: 4, token: 1},
-//     // prize: {x: 305, y: 403}
-//     prize: {x: 30, y: 40}
-//   }
-// ]
 
 let totalMinTokens = 0
 for(let machine of machines) {
@@ -42,16 +16,12 @@ for(let machine of machines) {
 
 console.log(totalMinTokens)
 
-// machines = input.split("\n\n").map(str => (
-//   parseMachine(str, 10_000_000_00)
-// ))
-// machines = input.split("\n\n").map(str => (
-//   parseMachine(str, 10_000_000_000_000)
-// ))
+machines = input.split("\n\n").map(str => (
+  parseMachine(str, 10_000_000_000_000)
+))
 totalMinTokens = 0
 for(let machine of machines) {
   let minTokens = getMinTokensToPrize(machine)
-  console.log("--", minTokens)
   if(minTokens == Infinity) continue
   totalMinTokens += minTokens
 }
@@ -71,30 +41,32 @@ function getMinTokensToPrize(
 ) {
   let {a, b, prize} = machine
 
-  let aTimes = 0
-  while(true) {
-    // console.log(aTimes)
-    if(aTimes > maxButtonPresses) return Infinity
-    if(a.x * aTimes > prize.x) return Infinity
-    if(a.y * aTimes > prize.y) return Infinity
+  // aTimes * a.x + bTimes * b.x = prize.x
+  // aTimes * a.y + bTimes * b.y = prize.y
+  //
+  // (aTimes * a.x + bTimes * b.x) * b.y = prize.x * b.y
+  // (aTimes * a.y + bTimes * b.y) * b.x = prize.y * b.x
+  //
+  // aTimes*a.x*b.y - aTimes*a.y*b.x  = prize.x*b.y - prize.y*b.x
+  // 
+  // aTimes(a.x*b.y - a.y*b.x) = prize.x*b.y - prize.y*b.x
+  //
+  // aTimes = (prize.x*b.y - prize.y*b.x)/(a.x*b.y - a.y*b.x)
+  //
+  // bTimes = (prize.x - aTimes*a.x)/b.x
 
-    if(
-      !(((prize.x - (a.x * aTimes)) % b.x) === 0) ||
-      !(((prize.y - (a.y * aTimes)) % b.y) === 0)
-    ) { aTimes++; continue }
+  let aTimes = (
+    (prize.x * b.y - prize.y * b.x)/
+    (a.x * b.y - a.y * b.x)
+  ),
+      bTimes = (prize.x - aTimes * a.x) / b.x
 
-    let bTimes = (prize.x - (a.x * aTimes)) / b.x
-    if(bTimes > maxButtonPresses) { aTimes++; continue }
+  if(aTimes > maxButtonPresses) return Infinity
+  if(!Number.isInteger(aTimes)) return Infinity
+  if(bTimes > maxButtonPresses) return Infinity
+  if(!Number.isInteger(bTimes)) return Infinity
 
-    let computedPrizeX = (a.x * aTimes) + (b.x * bTimes),
-        computedPrizeY = (a.y * aTimes) + (b.y * bTimes)
-    if(
-      (computedPrizeX !== prize.x) ||
-      (computedPrizeY !== prize.y)
-    ) { aTimes++; continue }
-
-    return (a.token * aTimes) + (b.token * bTimes)
-  }
+  return (aTimes * a.token) + (bTimes * b.token)
 }
 
 /**
