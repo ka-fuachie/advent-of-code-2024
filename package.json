@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "new-day": "./new-day.sh"
+    "new-day": "./scripts/new-day.sh"
   },
   "author": "",
   "license": "MIT",

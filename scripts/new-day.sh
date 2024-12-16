@@ -46,13 +46,13 @@ create_data_file() {
 
 create_js_file() {
   local day=$1
+  local js_file="${SOLUTIONS_DIR}/${DAY_PREFIX}${day}.js"
 
-  touch "${SOLUTIONS_DIR}/${DAY_PREFIX}${day}.js"
-  echo -e "import { getInput } from \"../utils.js\";"
-  echo -e "\n"
-  echo -e "const input = getInput(${day});"
-  echo -e "\n"
-  echo -e "console.log(input);"
+  touch "$js_file"
+
+  echo -e "import { getInput } from \"../utils.js\";" >> "$js_file"
+  echo -e "\nlet input = await getInput(${day});" >> "$js_file"
+  echo -e "\nconsole.log(input);" >> "$js_file"
 }
 
 set_day_as_default() {
