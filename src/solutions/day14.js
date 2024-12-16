@@ -43,17 +43,29 @@ console.log(
   quadrants[3]
 )
 
-// for(let i = 0; i < 1000; i++) {
-//   display(
-//     robots.map(robot => ({
-//       ...robot,
-//       p: getPositionAfterTime(robot.p, robot.v, i, mapSize)
-//     })),
-//     mapSize
-//   )
-//   console.log({i})
+  // display(
+  //   robots.map(robot => ({
+  //     ...robot,
+  //     p: getPositionAfterTime(robot.p, robot.v, 22, mapSize)
+  //   })),
+  //   mapSize
+  // )
+// for(let i = 0; i <= 10_500; i+=2) {
+//   console.clear()
 //
-//   await new Promise(r => setTimeout(r, 200))
+//   for(let j = 0; j <= 1; j++) {
+//     display(
+//       robots.map(robot => ({
+//         ...robot,
+//         p: getPositionAfterTime(robot.p, robot.v, i + j, mapSize)
+//       })),
+//       mapSize
+//     )
+//   }
+//
+//   console.log(i)
+//
+//   await new Promise(r => setTimeout(r, 300))
 // }
 
 /**
@@ -66,10 +78,28 @@ function display(robots, mapSize) {
     map[p[1]][p[0]] = map[p[1]][p[0]] + 1
   }
 
-  console.clear()
-  map
-    .map(line => line.map(n => n === 0 ?".": "█"))
-    .forEach(line => console.log(line.join("")))
+  let pixels = []
+
+  for(let row = 0; row < mapSize[1]; row+=4) {
+    let pixelRow = ""
+
+    for(let column = 0; column < mapSize[0]; column+=2) {
+      let charCode = 0x2800
+      if(map[row]?.    [column]     > 0) charCode += 1 << 0
+      if(map[row + 1]?.[column]     > 0) charCode += 1 << 1
+      if(map[row + 2]?.[column]     > 0) charCode += 1 << 2
+      if(map[row]?.    [column + 1] > 0) charCode += 1 << 3
+      if(map[row + 1]?.[column + 1] > 0) charCode += 1 << 4
+      if(map[row + 2]?.[column + 1] > 0) charCode += 1 << 5
+      if(map[row + 3]?.[column]     > 0) charCode += 1 << 6
+      if(map[row + 3]?.[column + 1] > 0) charCode += 1 << 7
+
+      pixelRow += String.fromCharCode(charCode)
+    }
+
+    pixels.push(pixelRow)
+  }
+  console.log(pixels.join("\n"))
 }
 
 /**
