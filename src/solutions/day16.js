@@ -158,9 +158,8 @@ console.log(bestPathsNodes.size)
   * @param {Map<string, number>} visited
   */
 function display(map, endNode, visited) {
-  let solutionStyle = "\x1b[42m\x1b[30m",
-      pathStyle = (endNode.row === endRow && endNode.column === endColumn)
-        ? solutionStyle: "\x1b[43m\x1b[30m"
+  let pathStyle = (endNode.row === endRow && endNode.column === endColumn)
+    ? "\x1b[42m\x1b[30m": "\x1b[43m\x1b[30m"
   /** @type {Record<string, string>} */
   const DisplayStyle = {
     "#": "\x1b[47m",
@@ -169,7 +168,7 @@ function display(map, endNode, visited) {
     "v": pathStyle,
     "<": pathStyle,
     "^": pathStyle,
-    "E": solutionStyle,
+    "E": "\x1b[46m\x1b[30m",
     "S": "\x1b[41m\x1b[30m",
     "+": "\x1b[0;100m",
   }
