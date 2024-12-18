@@ -12,4 +12,5 @@
 // import "./solutions/day12.js";
 // import "./solutions/day13.js";
 // import "./solutions/day14.js";
-import "./solutions/day15.js";
+// import "./solutions/day15.js";
+import "./solutions/day16.js";
