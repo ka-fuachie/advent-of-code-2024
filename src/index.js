@@ -19,4 +19,5 @@
 // import "./solutions/day19.js";
 // import "./solutions/day20.js";
 // import "./solutions/day21.js";
-import "./solutions/day22.js";
+// import "./solutions/day22.js";
+import "./solutions/day23.js";
